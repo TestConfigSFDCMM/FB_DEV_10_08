@@ -1,4 +1,5 @@
 //adding comment, wonder if it shows.
+//still more comments needed wow love comments.
 Public with sharing class dataEntry {
     
 	public Contact c1{get{
