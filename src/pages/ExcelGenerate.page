@@ -1,0 +1,1 @@
+<apex:page controller="ComprehensiveReport" sidebar="false" showHeader="false" cache="true" contentType="application/vnd.ms-excel#export.xls"><c:ExcelComponent datamodel="{!dm}" /></apex:page>

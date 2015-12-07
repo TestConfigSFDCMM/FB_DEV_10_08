@@ -1,0 +1,2 @@
+<apex:page standardController="Task" extensions="TaskRedirectExtension" action="{!redirect}" >
+</apex:page>

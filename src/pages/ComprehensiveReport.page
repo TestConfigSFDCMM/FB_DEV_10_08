@@ -1,0 +1,375 @@
+<apex:page controller="ComprehensiveReport">
+	<style>
+		.pbSubheader{
+			background-color: #1797c0 !important;
+			border-color: none !important;
+		}
+	</style>
+	<apex:form >
+		<apex:pageBlock title="Specify filter citeria">
+			<apex:pageblockbuttons location="bottom">
+				<apex:messages />
+				<apex:commandbutton id="cmd1" value="Run Report" action="{!display}" reRender="displaytables, renderbutton" status="loading"/>
+     		    <apex:outputpanel id="renderbutton">
+     		    	<apex:commandbutton value="Export To Excel" action="{!export}" rendered="{!rendered}" />
+     			</apex:outputpanel>
+     			<apex:actionstatus id="loading">
+       				<apex:facet name="start">
+	    				<img src="http://appexchange.salesforce.com/resource/1342135071000/layout/img/loading.gif" />
+	    			</apex:facet>
+	    		</apex:actionstatus>
+	    		
+       			
+     		</apex:pageblockbuttons>
+  
+    		<apex:pageBlockSection title="Specify Owners" columns="1">
+    			<apex:pageBlockSectionItem >
+    				<apex:outputPanel >
+	    				<table>
+	    					<tr>
+	    						<td>
+					        		<apex:selectRadio id="radio" layout="pageDirection" value="{!selectedOwners}">
+					            		<apex:selectOptions value="{!ritems}"/> 
+					            		<apex:actionSupport rerender="usergroups" event="onchange" status="usersloading" />
+					        		</apex:selectRadio>
+					        		<script type="text/javascript" language="Javascript">
+					                    function setFocus(){
+					                            var mytext = document.getElementById('{!$Component.radio}'); 
+					                            mytext.focus();
+					                    }
+					                    function addEvent(obj, evType, fn){ 
+					                            if (obj.addEventListener){ 
+					                                    obj.addEventListener(evType, fn, false); 
+					                                       return true; 
+					                            } else if (obj.attachEvent){ 
+					                                       var r = obj.attachEvent("on"+evType, fn); 
+					                                       return r; 
+					                            } else { 
+					                                       return false; 
+					                            } 
+					                    }
+					                    addEvent(window, 'load', setFocus);
+					                </script>
+	    						</td>
+	    						<td>
+					    			<apex:actionstatus id="usersloading">
+					       				<apex:facet name="start">
+						    				<img src="http://appexchange.salesforce.com/resource/1342135071000/layout/img/loading.gif" />
+						    			</apex:facet>
+						    		</apex:actionstatus>
+	        					</td>
+	    					</tr>
+	    				</table>
+    				</apex:outputPanel>
+    			</apex:pageBlockSectionItem>
+        		<apex:pageblockSectionItem >
+        			<apex:outputPanel id="usergroups">
+	        			<apex:outputPanel rendered="{!selectedOwners = 'DATA OF SPECIFIC GROUP OF USERS'}" id="usergroups2">
+	        				<table>
+	        					<tr>
+	        						<td colspan="3">
+	        							Search:&nbsp;
+	        							<apex:selectList value="{!SelectedUserGroupType}" size="1">
+	        								<apex:selectOptions value="{!UserGroupTypes}" />
+	        								<apex:actionSupport rerender="usergroups2" event="onchange" status="usersloading" />
+	        							</apex:selectList>
+	        							&nbsp;for&nbsp;
+	        							<apex:inputText value="{!UserSearchTerm}" />&nbsp;
+	        							<apex:commandButton value="Find" rerender="usergroups2" status="usersloading" />
+	        						</td>
+	        					</tr>
+	        				</table>
+	        				<table>
+	        					<tr>
+	        						<td>
+	        							<apex:selectList value="{!SelectedUserGroupElems}" size="10" multiselect="true">
+	        								<apex:selectOptions value="{!UserGroupElems}" />
+	        							</apex:selectList>
+	        						</td>
+	        						<td align="center">
+	        							<apex:commandButton value=">" action="{!AddGroupElems}" rerender="usergroups2" status="usersloading" />
+	        							<br /> 
+	        							<apex:commandButton value="<" action="{!RemoveGroupElems}" rerender="usergroups2" status="usersloading" />
+	        						</td>
+	        						<td>
+	        							<apex:selectList value="{!SelectedUserGroupElems2}" size="10" multiselect="true">
+	        								<apex:selectOptions value="{!UserGroupElems2}" />
+	        							</apex:selectList>
+	        						</td>
+	        					</tr>
+	        				</table>
+	        			</apex:outputPanel>
+	        		</apex:outputPanel>
+        		</apex:pageblockSectionItem>
+    		</apex:pageBlockSection>
+    		
+    		<apex:pageBlockSection title="Specify Time Frame" columns="1">
+    			<apex:pageBlockSectionItem >
+    				<apex:outputpanel >
+        				<table style="width:100%">
+          					<tr>
+            					<td>
+        							<apex:selectList label="Range:" size="1" value="{!selectedTimeRange}" id="droplist">
+          								<apex:selectOptions value="{!ditems}"/>
+          								<apex:actionSupport event="onchange" action="{!calculateDate}" reRender="startdate,enddate" status="datesloading" />
+        							</apex:selectList>
+        							<apex:actionstatus id="datesloading">
+					       				<apex:facet name="start">
+						    				<img src="http://appexchange.salesforce.com/resource/1342135071000/layout/img/loading.gif" />
+						    			</apex:facet>
+						    		</apex:actionstatus>
+            					</td>
+            					<td>
+            						<apex:outputpanel id="startdate">
+        								From:
+        								<apex:inputField value="{!timeFrameC1.birthdate}">
+        									<apex:actionSupport event="onchange" action="{!changetocustom}" reRender="droplist"/>
+        								</apex:inputField>
+            						</apex:outputpanel>
+            					</td>
+            					<td>
+            						<apex:outputpanel id="enddate">
+        								To:
+        								<apex:inputField value="{!timeFrameC2.birthdate}" >
+        									<apex:actionSupport event="onchange" action="{! changetocustom}" reRender="droplist"/>   
+            							</apex:inputField>
+            						</apex:outputpanel> 
+            					</td>
+         					</tr>         
+        				</table>
+        			</apex:outputpanel>
+        		</apex:pageBlockSectionItem> 
+    		</apex:pageBlockSection>
+    
+    		<apex:pageBlockSection title="Specify Data" columns="1">
+    			<apex:pageblocksectionitem >
+    				<apex:outputpanel >
+     					<table style="width:100%">
+        					<tr>
+          						<td width="30%">
+            						<apex:inputCheckbox value="{!checkActivities}" />
+            						Activities
+          						</td>
+          						<td>
+             						<apex:selectList size="1" value="{!selectedActivities1}">
+              							<apex:selectOptions value="{!activitiesItems1}"/>
+            						</apex:selectList>  
+          						</td>
+          						<td>
+             						<apex:selectList size="1" value="{!selectedActivities2}">
+              							<apex:selectOptions value="{!activitiesItems2}"/>
+            						</apex:selectList>  
+          						</td>
+        					</tr>
+        					<tr>
+          						<td width="30%">
+            						<apex:inputCheckbox value="{!checkOpportunities}" />
+            						Opportunities
+          						</td>
+          						<td>
+            						<apex:selectList size="1" value="{!selectedOpportunities}">
+              							<apex:selectOptions value="{!opportunitiesItems}"/>
+            						</apex:selectList>
+          						</td>
+          						<td />
+        					</tr>        
+        					<tr>
+          						<td>
+            						<apex:inputCheckbox value="{!checkAccounts}" />
+            						Accounts
+          						</td>
+          						<td />
+          						<td />
+        					</tr>
+        					<tr>
+          						<td> 
+            						<apex:inputcheckbox value="{!checkContacts}"/>
+            						Contacts 
+          						</td>
+          						<td />
+          						<td />
+        					</tr>
+        					<tr>
+        						<td colspan="3">
+        							<b>Other objects</b>
+        							<apex:outputPanel id="selectedObjects">
+	        							<table>
+	        								<tr>
+	        									<td>
+				        							<apex:selectList size="8" value="{!objsToAdd}" multiselect="true">
+				        								<apex:selectOptions value="{!AvailableObjects}" />
+				        							</apex:selectList>
+				        						</td>
+				        						<td align="center">
+				        							<apex:commandButton value=">" action="{!Add}" status="objectsStatus" rerender="selectedObjects" />
+				        							<br />
+				        							<apex:commandButton value="<" action="{!Rem}" status="objectsStatus" rerender="selectedObjects" />
+				        							<br />
+				        							<br />
+				        							<apex:actionStatus id="objectsStatus">
+				        								<apex:facet name="start">
+				        									<img src="http://appexchange.salesforce.com/resource/1342135071000/layout/img/loading.gif" />
+				        								</apex:facet>
+				        							</apex:actionStatus>
+				        						</td>
+				        						<td>
+				        							<apex:selectList size="8" value="{!objsToRem}" multiselect="true">
+				        								<apex:selectOptions value="{!SelectedObjects}" />
+				        							</apex:selectList>
+				        						</td>
+				        					</tr>
+				        				</table>
+				        			</apex:outputPanel>
+        						</td>
+        					</tr>
+      					</table> 
+      				</apex:outputpanel>
+      			</apex:pageblocksectionitem>
+    		</apex:pageBlockSection>
+		</apex:pageBlock>
+
+		<apex:outputpanel id="displaytables">
+			<apex:pageblock rendered="{!rendered}"> 
+    			<apex:outputpanel rendered="{!checkActivities}">
+    				<apex:pageblocktable value="{!activityvar}" var="item0" >
+      					<apex:facet name="header">{!activitytitle}</apex:facet>
+      					<apex:column headerValue="Subject">
+      						<apex:outputlink value="{!item0.ClickURL}" target="_blank">
+      							{!item0.Subject}
+      						</apex:outputlink>
+      					</apex:column>
+     					<apex:column headerValue="Assigned">
+     						<apex:outputlink value="{!item0.AssignedClickURL}" target="_blank">
+      							{!item0.Assigned}
+      						</apex:outputlink>
+     					</apex:column>
+     					<apex:column headerValue="Date">
+     						<apex:outputtext value="{0,date,MM'/'dd'/'yyyy}">
+		                		<apex:param value="{!item0.Date}"/> 
+		                	</apex:outputtext>
+     					</apex:column>
+     					<apex:column headerValue="Task" >
+     						<apex:inputcheckbox value="{!item0.Task}" disabled="true" />
+     					</apex:column> 
+     					<apex:column headerValue="Priority" value="{!item0.Priority}" />
+     					<apex:column headerValue="Status" value="{!item0.Status}" />
+     					<apex:column headerValue="Contact" value="{!item0.Contact}" />
+     					<!-- <apex:column headerValue="Lead" value="{!item0.Contact}" /> -->
+     					<apex:column headerValue="Related to" value="{!item0.Opportunity}" />
+     					<apex:column headerValue="Created By">
+     						<apex:outputlink value="{!item0.CreatedByClickURL}" target="_blank">
+      							{!item0.CreatedBy}
+      						</apex:outputlink>
+     					</apex:column>
+     				</apex:pageblocktable><br /><br />
+    			</apex:outputpanel>
+
+    			<apex:outputpanel rendered="{!checkOpportunities}">
+    				<apex:pageblocktable value="{!oppvar}" var="item3" >
+    					<apex:facet name="header">{!opptitle}</apex:facet>
+     					<apex:column headerValue="Opportunity Name">
+     						<apex:outputlink value="/{!item3.Id}" target="_blank">
+								 {!item3.Name}
+     						</apex:outputlink>
+     					</apex:column>
+      					<apex:column headerValue="Account Name">
+     						<apex:outputlink value="/{!item3.AccountId}" target="_blank">
+								 {!item3.Account.Name}
+     						</apex:outputlink>
+     					</apex:column>
+     					<apex:column headerValue="Type" value="{!item3.Type}" />
+      					<apex:column headerValue="Lead Source" value="{!item3.LeadSource}" />
+     					<apex:column headerValue="Amount" value="{!item3.Amount}" />
+     					<apex:column headerValue="Closed Date">
+     						<apex:outputtext value="{0,date,MM'/'dd'/'yyyy}">
+		                		<apex:param value="{!item3.CloseDate}"/> 
+		                	</apex:outputtext>
+     					</apex:column>
+      					<apex:column headerValue="Probability %" value="{!item3.Probability}" />
+     					<apex:column headerValue="Owner">
+     						<apex:outputlink value="/{!item3.OwnerId}" target="_blank">
+								 {!item3.Owner.Name}
+     						</apex:outputlink>
+     					</apex:column>
+				    </apex:pageblocktable><br/><br/>
+    			</apex:outputpanel>
+    
+    			<apex:outputpanel rendered="{!checkAccounts}">
+    				<apex:pageblocktable value="{!accvar}" var="item4" >
+      					<apex:facet name="header">{!acctitle}</apex:facet>
+      					<apex:column headerValue="Account Name">
+     						<apex:outputlink value="/{!item4.Id}" target="_blank">
+								 {!item4.Name}
+     						</apex:outputlink>
+     					</apex:column>
+     					<apex:column headerValue="Industry" value="{!item4.Industry}" />
+     					<apex:column headerValue="Billing Street" value="{!item4.BillingStreet}" />
+      					<apex:column headerValue="Billing City" value="{!item4.BillingCity}" />
+      					<apex:column headerValue="Billing State" value="{!item4.BillingState}" />
+      					<apex:column headerValue="Billing Zipcode" value="{!item4.BillingPostalCode}" />
+     					<apex:column headerValue="Owner">
+     						<apex:outputlink value="/{!item4.OwnerId}" target="_blank">
+								 {!item4.Owner.Name}
+     						</apex:outputlink>
+     					</apex:column>       
+    				</apex:pageblocktable> <br /><br />
+    			</apex:outputpanel>
+    
+			    <apex:outputpanel rendered="{!checkContacts}">
+    				<apex:pageblocktable value="{!contvar}" var="item5" >
+      					<apex:facet name="header">{!conttitle}</apex:facet>
+      					<apex:column headerValue="Name">
+      						<apex:outputlink value="/{!item5.Id}" target="_blank">
+								 {!item5.Name}
+     						</apex:outputlink>
+      					</apex:column>
+     					<apex:column headerValue="Account Name">
+     						<apex:outputlink value="/{!item5.AccountId}" target="_blank">
+								 {!item5.Account.Name}
+     						</apex:outputlink>
+     					</apex:column>
+      					<!-- <apex:column headerValue="First Name" value="{!item5.FirstName}" />
+      					<apex:column headerValue="Last Name" value="{!item5.LastName}" /> -->
+     					<apex:column headerValue="Phone" value="{!item5.Phone}" />
+     					<apex:column headerValue="Email" value="{!item5.Email}" />
+      					<apex:column headerValue="Mailing Street" value="{!item5.MailingStreet}" />
+      					<apex:column headerValue="Mailing City" value="{!item5.MailingCity}" />
+      					<apex:column headerValue="Mailing State" value="{!item5.MailingState}" />
+      					<apex:column headerValue="Mailing Zipcode" value="{!item5.MailingPostalCode}" />
+     					<apex:column headerValue="Owner">
+     						<apex:outputlink value="/{!item5.OwnerId}" target="_blank">
+								 {!item5.Owner.Name}
+     						</apex:outputlink>
+     					</apex:column>       
+			    	</apex:pageblocktable> <br /><br /> 
+     			</apex:outputpanel>
+     			
+     			<apex:repeat value="{!otherObjectsVar}" var="objsKey"> 
+     				<apex:pageBlockTable value="{!otherObjectsVar[objsKey].objects}" var="itemxId">
+     					<apex:facet name="header">
+     						{!objsKey} 
+     						{!otherObjectsVar[objsKey].objtitle}
+     					</apex:facet>
+      					<apex:column headerValue="Id" rendered="{!NOT(otherObjectsVar[objsKey].hasName)}">
+      						<apex:outputlink value="/{!otherObjectsVar[objsKey].objects[itemxId].obj['Id']}" target="_blank">
+								 {!otherObjectsVar[objsKey].objects[itemxId].obj['Id']} 
+     						</apex:outputlink>
+      					</apex:column>
+      					<apex:column headerValue="Name" rendered="{!otherObjectsVar[objsKey].hasName}">
+      						<apex:outputlink value="/{!otherObjectsVar[objsKey].objects[itemxId].obj['Id']}" target="_blank">
+								 {!otherObjectsVar[objsKey].objects[itemxId].obj['Name']} 
+     						</apex:outputlink>
+      					</apex:column>
+      					<apex:repeat value="{!otherObjectsVar[objsKey].fieldsY}" var="obbKey">
+	      					<apex:column headerValue="{!otherObjectsVar[objsKey].fieldsY[obbKey]}">
+	      						<apex:outputField value="{!otherObjectsVar[objsKey].objects[itemxId].obj[obbKey]}" />
+	      					</apex:column>
+      					</apex:repeat>
+     				</apex:pageBlockTable> <br /><br />
+     			</apex:repeat>
+     			
+  			</apex:pageblock>
+  		</apex:outputpanel>
+    </apex:form>
+
+</apex:page>

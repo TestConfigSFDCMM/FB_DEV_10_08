@@ -1,0 +1,81 @@
+<apex:page controller="dataEntry">
+    <apex:form >
+        <apex:pageMessages />
+        <apex:pageBlock id="dataEntry" >
+            <apex:pageBlockSection title="Contact Information" columns="2">
+                <apex:inputField value="{!c1.FirstName}"/>
+                <apex:inputfield value="{!c1.LastName}" required="false" style="height:15px;width:170px;border-left: medium solid red"></apex:inputfield>             
+                <apex:inputField value="{!c1.HomePhone}"/>
+                <apex:inputField value="{!c1.MobilePhone}"/>
+                <apex:inputField value="{!c1.Phone}"/>
+                <apex:inputField value="{!c1.Email}"/>
+                <apex:inputField value="{!c1.FB_Type__c}" required="false" style="height:20px;width:210px;border-left: medium solid red"/>      
+                <apex:inputField value="{!c1.FB_Tier__c}"/>   
+                <apex:inputField value="{!c1.Customer_Number__c}"/>                   
+                <apex:inputField value="{!c1.FB_Gender__c}"/>       
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Contact Address" columns="1">
+                <apex:inputField value="{!c1.MailingStreet}"/>
+                <apex:inputField value="{!c1.MailingCity}"/>
+                <apex:inputField value="{!c1.MailingStateCode}"/>
+                <apex:inputField value="{!c1.MailingPostalCode}"/>
+                <apex:inputField value="{!c1.MailingCountryCode}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Contact 2 Information" id="contact2" columns="2" collapsible="true" >
+                <apex:inputField value="{!c2.FirstName}"/>
+                <apex:inputField value="{!c2.LastName}" required="false" style="height:15px;width:170px;border-left: medium solid red"/>
+                <apex:inputField value="{!c2.HomePhone}"/>
+                <apex:inputField value="{!c2.MobilePhone}"/>
+                <apex:inputField value="{!c2.Phone}"/>
+                <apex:inputField value="{!c2.Email}"/>
+                <apex:inputField value="{!c2.FB_Type__c}" required="false" style="height:20px;width:210px;border-left: medium solid red"/>
+                <apex:inputField value="{!c2.FB_Tier__c}"/> 
+                <apex:inputField value="{!c2.Customer_Number__c}"/>                   
+                <apex:inputField value="{!c2.FB_Gender__c}"/>                                                          
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Contact 2 Address" columns="1" id="c2Address" collapsible="true" >
+                <apex:commandButton action="{!copyAddress}" value="Copy Contact Address" rerender="c2Address"/>
+                <apex:inputField value="{!c2.MailingStreet}"/>
+                <apex:inputField value="{!c2.MailingCity}"/>
+                <apex:inputField value="{!c2.MailingStateCode}"/>
+                <apex:inputField value="{!c2.MailingPostalCode}"/>
+                <apex:inputField value="{!c2.MailingCountryCode}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Account" id="Acc">
+            
+                <apex:selectList value="{!rt}" size="1" label="Record Type">
+                    <apex:selectOptions value="{!rtitems}"/>
+                    <apex:actionSupport event="onchange" action="{!updateAccount}" rerender="Acc"/>
+                </apex:selectList>
+            
+                <apex:inputfield value="{!acc.Name}" required="false" style="height:15px;width:170px;border-left: medium solid red" ></apex:inputfield>              
+                <apex:inputField value="{!acc.Type}" required="false" style="height:20px;width:210px;border-left: medium solid red"/>
+                <apex:inputField value="{!acc.Phone}"/>
+                <apex:inputField value="{!acc.Branch__c}" required="true"/>
+                <apex:inputField value="{!acc.FB_Tier__c}"/>                    
+                <apex:inputfield value="{!acc.OwnerID}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Account Address Information" id="accAddress">
+                <apex:commandButton action="{!copyAddressFromContact}" value="Copy Contact Address" rerender="accAddress"/>
+                <apex:commandButton action="{!copyAddressFromAccount}" value="Copy Physical Address From Mailing Address" rerender="accAddress"/>
+                <apex:inputField value="{!acc.BillingStreet}"/>
+                <apex:inputField value="{!acc.ShippingStreet}"/>
+                <apex:inputField value="{!acc.BillingCity}"/>
+                <apex:inputField value="{!acc.ShippingCity}"/>
+                <apex:inputField value="{!acc.BillingStateCode}"/>
+                <apex:inputField value="{!acc.ShippingStateCode}"/>
+                <apex:inputField value="{!acc.BillingPostalCode}"/>
+                <apex:inputField value="{!acc.ShippingPostalCode}"/>
+                <apex:inputField value="{!acc.BillingCountryCode}"/>
+                <apex:inputField value="{!acc.ShippingCountryCode}"/>
+            </apex:pageBlockSection>     
+        </apex:pageBlock>
+        <center>
+            <apex:commandButton action="{!save}" value="Save"/>
+            <apex:commandButton action="{!cancel}" value="Cancel" />
+            <apex:commandButton action="{!toMobile}" value="Mobile Version" />
+        </center>
+        <script> twistSection(document.getElementById('{!$Component.dataEntry.contact2}').getElementsByTagName('img')[0]) </script>  
+        <script> twistSection(document.getElementById('{!$Component.dataEntry.c2Address}').getElementsByTagName('img')[0]) </script>    
+    </apex:form>
+</apex:page>

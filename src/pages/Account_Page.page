@@ -1,0 +1,2 @@
+<apex:page standardController="Account" extensions="AccountRedirectExtension" action="{!redirect}"> 
+</apex:page>

@@ -1,0 +1,12 @@
+<apex:page standardController="Opportunity" tabStyle="Opportunity" title="Delegate Opportunity">
+    <apex:sectionheader title="Delegate Opportunity"></apex:sectionheader>
+    <flow:interview name="Delegate_Opportunity" finishLocation="/{!Id}">
+        <apex:param name="varOpp" value="{!Id}"/>
+        <apex:param name="varOwner" value="{!Opportunity.Owner}"/>
+    </flow:interview>
+    <apex:form >
+        <apex:panelGrid columns="1" style="float:right;">
+            <apex:commandButton action="{!Cancel}" value="Cancel"/>
+        </apex:panelGrid>    
+    </apex:form>
+</apex:page>

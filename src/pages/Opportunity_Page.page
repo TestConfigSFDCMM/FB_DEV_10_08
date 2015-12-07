@@ -1,0 +1,2 @@
+<apex:page standardController="Opportunity" extensions="OpportunityRedirectExtension" action="{!redirect}"> 
+</apex:page>

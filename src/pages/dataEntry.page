@@ -1,0 +1,488 @@
+<apex:page showheader="false" sidebar="false" standardStylesheets="false" controller="dataEntry">
+<head>
+    
+    
+    <apex:stylesheet value="{!URLFOR($Resource.jquery_mobile, 'jquery.mobile-1.3.1.min.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jquery_mobile,'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jquery_mobile,'jquery.mobile-1.3.1.min.js')}" />
+    
+    
+    <script>
+        j$ = jQuery.noConflict();
+    </script>
+    <style>
+    
+        .ui-btn-text {
+            font-size: 13px; /* Play with font size of the text */
+            
+        }
+        
+        .scroller {
+              position: absolute;
+              top: 50px;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              overflow: scroll;
+        }
+        
+        input[type=text] {
+            -webkit-user-select: auto;
+        }
+        
+        input[type=number] {
+            -webkit-user-select: auto;
+        }
+        
+        input[type=password] {
+            -webkit-user-select: auto;
+        }
+    
+        
+    </style>
+    
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>      
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+</head>
+
+    <!-- 
+    <apex:define name="body">
+    -->
+    <body >
+        
+        <div data-role="page" data-theme="b">
+        <div data-role="content" > 
+        
+        <div class="scroller">
+        
+        <apex:form >
+            <apex:pageMessages />
+            <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+                <li data-role="list-divider">Contact Information</li>
+            </ul>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">First Name</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.FirstName}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Last Name</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.LastName}" required="false"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Home Phone</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.HomePhone}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Cell Phone</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.MobilePhone}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Work Phone</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.Phone}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Email</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.Email}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Type</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.FB_Type__c}" required="false"/>
+                </div></div>
+            </div>         
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Tier</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.FB_Tier__c}" required="false"/>
+                </div></div>
+            </div>      
+            <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+                <li data-role="list-divider">Contact Address</li>
+            </ul>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing Street</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.MailingStreet}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing City</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.MailingCity}"/>
+                </div></div>
+            </div>
+            
+               
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing State</div></div>
+                
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                
+                
+                <apex:inputField value="{!c1.MailingStateCode}" id="sss" style="width:100%"/>
+                    <script type="text/javascript" language="Javascript">
+                        document.getElementById('{!$Component.sss}').setAttribute('data-role', 'none');
+                        j$( document ).bind( "pageinit", function( event ) { 
+                            setTimeout(function(){
+                                document.getElementById('{!$Component.sss}').parentNode.setAttribute('style', 'width:100%;height:30px');
+                                document.getElementById('{!$Component.sss}').setAttribute('style', 'width:100%;height:30px');
+                            },1000);
+                        });
+                    </script>
+                    
+                
+                </div></div>
+            </div>
+            
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing Zip</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.MailingPostalCode}" style="data-placeholder:true"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing Country</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c1.MailingCountryCode}"/>
+                </div></div>
+            </div>
+            <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+                <li data-role="list-divider">Contact 2 Information</li>
+            </ul>
+            
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">First Name</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c2.FirstName}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Last Name</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c2.LastName}" required="false"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Home Phone</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c2.HomePhone}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Cell Phone</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c2.MobilePhone}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Work Phone</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c2.Phone}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Email</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c2.Email}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Type</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c2.FB_Type__c}" required="false"/>
+                </div></div>
+            </div>              
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Tier</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c2.FB_Tier__c}" required="false"/>
+                </div></div>
+            </div>  
+            <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+                <li data-role="list-divider">Contact 2 Address</li>
+            </ul>
+           
+            <p><apex:commandLink action="{!copyAddress}" value="Copy Contact Address" id="CompleteButton1" style="float:center; width:300px;" rerender="c2Address" oncomplete="updatej()"/></p>
+            <script type="text/javascript" language="Javascript">
+                document.getElementById('{!$Component.CompleteButton1}').setAttribute('data-role', 'button')
+                document.getElementById('{!$Component.CompleteButton1}').setAttribute('data-theme', 'b');
+                document.getElementById('{!$Component.CompleteButton1}').setAttribute('data-inline', 'true');
+                document.getElementById('{!$Component.CompleteButton1}').setAttribute('data-ajax', 'false');
+                function updatej(){
+                    j$("#c2addr").trigger("create");
+                    var tallest = 0;
+                    j$('.ui-grid-a .ui-bar-c').each(function() {
+                        if(j$(this).height() > tallest) {tallest = j$(this).height();}
+                    }).height(tallest);
+                }
+            </script><br></br>
+            
+            <apex:pageblock id="c2Address">
+                <div id="c2addr">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing Street</div></div>
+                    <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                        <apex:inputField value="{!c2.MailingStreet}"/>
+                    </div></div>
+                </div>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing City</div></div>
+                    <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                        <apex:inputField value="{!c2.MailingCity}"/>
+                    </div></div>
+                </div>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing State</div></div>
+                    <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!c2.MailingStateCode}" id="sss2" style="width:100%"/>
+                    <script type="text/javascript" language="Javascript">
+                        document.getElementById('{!$Component.sss2}').setAttribute('data-role', 'none');
+                        j$( document ).bind( "pageinit", function( event ) { 
+                            setTimeout(function(){
+                                document.getElementById('{!$Component.sss2}').parentNode.setAttribute('style', 'width:100%;height:30px');
+                                document.getElementById('{!$Component.sss2}').setAttribute('style', 'width:100%;height:30px');
+                            },1000);
+                        });
+                    </script>
+                    </div></div>
+                </div>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing Zip</div></div>
+                    <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                        <apex:inputField value="{!c2.MailingPostalCode}"/>
+                    </div></div>
+                </div>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing Country</div></div>
+                    <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                        <apex:inputField value="{!c2.MailingCountryCode}"/>
+                    </div></div>
+                </div>
+                </div>
+            </apex:pageblock>
+            <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+                <li data-role="list-divider">Account</li>
+            </ul>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Record Type</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:selectList value="{!rt}" size="1" label="Record Type">
+                        <apex:selectOptions value="{!rtitems}"/>
+                        <apex:actionSupport event="onchange" action="{!updateAccount}" rerender="accs" oncomplete="updatem()"/>
+                    </apex:selectList>
+                </div></div>
+            </div>
+            <script type="text/javascript" language="Javascript">
+                function updatem(){
+                    j$("#accss").trigger("create");
+                    var tallest = 0;
+                    j$('.ui-grid-a .ui-bar-c').each(function() {
+                        if(j$(this).height() > tallest) {tallest = j$(this).height();}
+                    }).height(tallest);
+                }
+            </script>
+            <apex:outputPanel id="accs">
+            <div id="accss">
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Type</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.Type}" required="false"/>
+                </div></div>
+            </div>
+            
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Name</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.Name}" required="false"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Phone</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.Phone}" required="false"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Market</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.FB_Market__c}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Branch</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.FB_Branch__c}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Tier</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.FB_Tier__c}"/>
+                </div></div>
+            </div>            
+            </div>
+            </apex:outputPanel>
+            <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+                <li data-role="list-divider">Account Address Information</li>
+            </ul>
+            <p><apex:commandLink action="{!copyAddressFromContact}" value="Copy Contact Address" id="CompleteButton2" style="float:center; width:300px;" rerender="accAddress" oncomplete="updatek()"/></p>
+            <script type="text/javascript" language="Javascript">
+                document.getElementById('{!$Component.CompleteButton2}').setAttribute('data-role', 'button')
+                document.getElementById('{!$Component.CompleteButton2}').setAttribute('data-theme', 'b');
+                document.getElementById('{!$Component.CompleteButton2}').setAttribute('data-inline', 'true');
+                function updatek(){
+                    j$("#accaddr").trigger("create");
+                    var tallest = 0;
+                    j$('.ui-grid-a .ui-bar-c').each(function() {
+                        if(j$(this).height() > tallest) {tallest = j$(this).height();}
+                    }).height(tallest);
+                }
+            </script><br></br>
+            <apex:pageblock id="accAddress">
+                <div id="accaddr">
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing Street</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.BillingStreet}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing City</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.BillingCity}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing State</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                <apex:inputField value="{!acc.BillingStateCode}" id="sss3" style="width:100%"/>
+                    <script type="text/javascript" language="Javascript">
+                        document.getElementById('{!$Component.sss3}').setAttribute('data-role', 'none');
+                        j$( document ).bind( "pageinit", function( event ) { 
+                            setTimeout(function(){
+                                document.getElementById('{!$Component.sss3}').parentNode.setAttribute('style', 'width:100%;height:30px');
+                                document.getElementById('{!$Component.sss3}').setAttribute('style', 'width:100%;height:30px');
+                            },1000);
+                        });
+                    </script>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing Zip</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.BillingPostalCode}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Mailing Country</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.BillingCountryCode}"/>
+                </div></div>
+            </div>
+            </div>
+            </apex:pageblock>
+            <p><apex:commandLink action="{!copyAddressFromAccount}" value="Copy Physical Addr From Mailing Addr" id="CompleteButton3" style="float:center;font-size:5px; width:300px;" rerender="accAddress2" oncomplete="updatel()"/></p>
+            <script type="text/javascript" language="Javascript">
+                document.getElementById('{!$Component.CompleteButton3}').setAttribute('data-role', 'button')
+                document.getElementById('{!$Component.CompleteButton3}').setAttribute('data-theme', 'b');
+                document.getElementById('{!$Component.CompleteButton3}').setAttribute('data-inline', 'true');
+                function updatel(){
+                    j$("#accaddr2").trigger("create");
+                    var tallest = 0;
+                    j$('.ui-grid-a .ui-bar-c').each(function() {
+                        if(j$(this).height() > tallest) {tallest = j$(this).height();}
+                    }).height(tallest);
+                }
+            </script><br></br>
+            <apex:pageblock id="accAddress2">
+                <div id="accaddr2">
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Physical Street</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.ShippingStreet}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Physical City</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.ShippingCity}"/>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Physical State</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                <apex:inputField value="{!acc.ShippingStateCode}" id="sss4" style="width:100%"/>
+                    <script type="text/javascript" language="Javascript">
+                        document.getElementById('{!$Component.sss4}').setAttribute('data-role', 'none');
+                        j$( document ).bind( "pageinit", function( event ) { 
+                            setTimeout(function(){
+                                document.getElementById('{!$Component.sss4}').parentNode.setAttribute('style', 'width:100%;height:30px');
+                                document.getElementById('{!$Component.sss4}').setAttribute('style', 'width:100%;height:30px');
+                            },1000);
+                        });
+                    </script>
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Physical Zip</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.ShippingPostalCode}" style="-webkit-user-select: auto" />
+                </div></div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-c">Physical Country</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-c">
+                    <apex:inputField value="{!acc.ShippingCountryCode}"/>
+                </div></div>
+            </div>
+            </div>
+            </apex:pageblock>
+            <center>
+            <p><apex:commandLink action="{!save}" value="Save" id="CompleteButton4" style="float:center; width:120px;"/></p>
+            <script type="text/javascript" language="Javascript">
+                document.getElementById('{!$Component.CompleteButton4}').setAttribute('data-role', 'button')
+                document.getElementById('{!$Component.CompleteButton4}').setAttribute('data-theme', 'b');
+                document.getElementById('{!$Component.CompleteButton4}').setAttribute('data-inline', 'true');
+            </script>
+            </center>
+            <!-- 
+            <p><apex:commandLink action="{!cancel}" value="Cancel" id="CompleteButton5" style="float:right; width:120px;"/></p>
+            <script type="text/javascript" language="Javascript">
+                document.getElementById('{!$Component.CompleteButton5}').setAttribute('data-role', 'button')
+                document.getElementById('{!$Component.CompleteButton5}').setAttribute('data-theme', 'b');
+                document.getElementById('{!$Component.CompleteButton5}').setAttribute('data-inline', 'true');
+            </script>
+            --> 
+            
+        </apex:form>
+        
+        </div>
+        </div>
+        </div>
+        
+        <script>
+            j$(function(){
+                var tallest = 0;
+                j$('.ui-grid-a .ui-bar-c').each(function() {
+                    if(j$(this).height() > tallest) {tallest = j$(this).height();}
+                }).height(tallest);
+            })
+        </script>
+        <!-- 
+    </apex:define>
+    -->
+    </body>
+</apex:page>
