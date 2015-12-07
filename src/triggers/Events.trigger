@@ -2,7 +2,7 @@ trigger Events on Event (after insert) {
 
 
  //if(Ctrl_UserGoal__c.getInstance().UserGoalTrigger__c == false) { 
-            
+            //more code that is well written
 
       if(Trigger.isAfter && Trigger.isInsert){
          //Insert User Goals into standard User object
