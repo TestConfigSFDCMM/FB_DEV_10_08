@@ -1,3 +1,4 @@
+//Adding some comment for demo
 public with sharing class AccountRedirectExtension {
 
 	private ApexPages.StandardController controller = null;
